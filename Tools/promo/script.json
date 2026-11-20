@@ -1,0 +1,108 @@
+{
+  "title": "Avro Next promo",
+  "voice": "Samantha",
+  "rate": 172,
+  "lines": [
+    {
+      "id": "hook",
+      "scene": "title",
+      "spoken": "Typing Bangla on a new Mac just got easy again.",
+      "caption": "Typing Bangla on a new Mac just got easy again."
+    },
+    {
+      "id": "problem",
+      "scene": "problem",
+      "spoken": "Eye Avro stopped working on the latest Macs. Meet Avro Next.",
+      "caption": "iAvro stopped working on the latest Macs. Meet Avro Next."
+    },
+    {
+      "id": "native",
+      "scene": "native",
+      "spoken": "A free, native keyboard for Apple Silicon, ready for macOS twenty seven.",
+      "caption": "A free, native keyboard for Apple Silicon, ready for macOS 27."
+    },
+    {
+      "id": "phonetic",
+      "scene": "type_phonetic",
+      "spoken": "Type Bangla the way it sounds, just like Avro Phonetic.",
+      "caption": "Type Bangla the way it sounds, just like Avro Phonetic.",
+      "hold": 2.6
+    },
+    {
+      "id": "suggest",
+      "scene": "type_suggest",
+      "spoken": "Smart suggestions appear as you type.",
+      "caption": "Smart suggestions appear as you type.",
+      "hold": 2.4
+    },
+    {
+      "id": "choose",
+      "scene": "type_choose",
+      "spoken": "Pick a different word with the arrow keys, then press space.",
+      "caption": "Pick a different word with the arrow keys, then press Space.",
+      "hold": 2.2
+    },
+    {
+      "id": "learn",
+      "scene": "type_learn",
+      "spoken": "Next time, Avro Next remembers your choice.",
+      "caption": "Next time, Avro Next remembers your choice.",
+      "hold": 1.6
+    },
+    {
+      "id": "shift",
+      "scene": "type_shift",
+      "spoken": "Capital letters give you the extra letters, exactly like Avro.",
+      "caption": "Capital letters give you the extra letters, exactly like Avro.",
+      "hold": 2.4
+    },
+    {
+      "id": "numbers",
+      "scene": "type_numbers",
+      "spoken": "Punctuation, numbers and the taka sign come out in Bangla too.",
+      "caption": "Punctuation, numbers and the taka sign come out in Bangla too.",
+      "hold": 2.0
+    },
+    {
+      "id": "emoji",
+      "scene": "type_emoji",
+      "spoken": "It even suggests emoji.",
+      "caption": "It even suggests emoji.",
+      "hold": 2.0
+    },
+    {
+      "id": "layouts",
+      "scene": "settings_layouts",
+      "spoken": "Choose Avro Phonetic, Khipro or Probhat.",
+      "caption": "Choose Avro Phonetic, Khipro or Probhat.",
+      "hold": 1.0
+    },
+    {
+      "id": "settings",
+      "scene": "settings_more",
+      "spoken": "Change the suggestion bar, the font size, smart quotes and your own auto correct words.",
+      "caption": "Change the suggestion bar, font size, smart quotes and your own auto-correct words.",
+      "hold": 0.8
+    },
+    {
+      "id": "updates",
+      "scene": "updates",
+      "spoken": "And when a new version is out, Avro Next tells you.",
+      "caption": "And when a new version is out, Avro Next tells you.",
+      "hold": 1.2
+    },
+    {
+      "id": "install",
+      "scene": "install",
+      "spoken": "Getting it takes three steps. Download, install, and add it in Input Sources.",
+      "caption": "Getting it takes three steps: download, install, add it in Input Sources.",
+      "hold": 1.0
+    },
+    {
+      "id": "cta",
+      "scene": "end",
+      "spoken": "Avro Next is free and open source. Download it today, and help make it better.",
+      "caption": "Free and open source. Download it today, and help make it better."
+    }
+  ]
+}
