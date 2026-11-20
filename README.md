@@ -92,7 +92,7 @@ Double-click **Uninstall Avro Next.command** in the DMG. Then log out and back i
 You need the Xcode Command Line Tools (`xcode-select --install`) and [Rust](https://rustup.rs). Full Xcode isn't required.
 
 ```sh
-git clone --recurse-submodules https://github.com/Shamsulhaq/avro-next.git
+git clone --recurse-submodules https://github.com/bmshamsul/avro-next.git
 cd avro-next
 ./build.sh          # builds build/Avro Next.app and runs the engine tests
 ./package.sh        # builds dist/Avro-Next-<version>.dmg with the installer
@@ -134,7 +134,7 @@ package.sh    DMG with installer, uninstaller and read-me
 
 Contributions are welcome, from bug reports and testing to code and documentation. Avro Next is open to everyone.
 
-- **Found a bug or a wrong word?** [Open an issue](https://github.com/Shamsulhaq/avro-next/issues/new/choose).
+- **Found a bug or a wrong word?** [Open an issue](https://github.com/bmshamsul/avro-next/issues/new/choose).
 - **Want to write code?** Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, how the code is organised, and the pull request steps. Issues labelled `good first issue` are a good place to start.
 - **Every pull request** is built and tested automatically by CI on an Apple Silicon Mac.
 
@@ -144,13 +144,13 @@ Please be kind and respectful; see the code of conduct in [CONTRIBUTING.md](CONT
 
 Avro Next is created and maintained by **Shamsul Haq Bhuyan**, a software engineer.
 
-- GitHub: [@Shamsulhaq](https://github.com/Shamsulhaq)
+- GitHub: [@bmshamsul](https://github.com/bmshamsul)
 - Website: [shamsul.me](http://shamsul.me)
 - X (Twitter): [@Bm_Shamsulhaq](https://x.com/Bm_Shamsulhaq)
 
-For bugs and feature requests, please use [GitHub Issues](https://github.com/Shamsulhaq/avro-next/issues) rather than direct messages, so others can find the answers too.
+For bugs and feature requests, please use [GitHub Issues](https://github.com/bmshamsul/avro-next/issues) rather than direct messages, so others can find the answers too.
 
-All contributors are listed on the [contributors page](https://github.com/Shamsulhaq/avro-next/graphs/contributors).
+All contributors are listed on the [contributors page](https://github.com/bmshamsul/avro-next/graphs/contributors).
 
 ## Credits and license
 

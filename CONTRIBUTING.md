@@ -4,10 +4,10 @@ Thanks for helping. Avro Next is a small, friendly project, and contributions of
 
 ## Ways to help
 
-- **Report a bug:** [open an issue](https://github.com/Shamsulhaq/avro-next/issues/new?template=bug_report.md) with your macOS version, Avro Next version, the app you were typing in, what you typed, and what happened.
-- **Suggest an idea:** [open a feature request](https://github.com/Shamsulhaq/avro-next/issues/new?template=feature_request.md).
+- **Report a bug:** [open an issue](https://github.com/bmshamsul/avro-next/issues/new?template=bug_report.md) with your macOS version, Avro Next version, the app you were typing in, what you typed, and what happened.
+- **Suggest an idea:** [open a feature request](https://github.com/bmshamsul/avro-next/issues/new?template=feature_request.md).
 - **Wrong word or spelling:** if Avro Phonetic gives a wrong suggestion, say what you typed and what you expected. Dictionary and phonetic rules come from the [riti](https://github.com/OpenBangla/riti) engine, so some fixes belong there. We'll help route it.
-- **Test a release:** pre-releases are on the [Releases](https://github.com/Shamsulhaq/avro-next/releases) page. Reports from macOS 27 and from apps like Word, Chrome and Slack are especially useful.
+- **Test a release:** pre-releases are on the [Releases](https://github.com/bmshamsul/avro-next/releases) page. Reports from macOS 27 and from apps like Word, Chrome and Slack are especially useful.
 - **Pick up an issue:** look for the `good first issue` and `help wanted` labels. Comment on the issue first so work isn't duplicated.
 
 ## Development setup
@@ -18,7 +18,7 @@ You need an Apple Silicon Mac, the Xcode Command Line Tools and Rust. Full Xcode
 xcode-select --install                      # Command Line Tools
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh   # Rust
 
-git clone --recurse-submodules https://github.com/Shamsulhaq/avro-next.git
+git clone --recurse-submodules https://github.com/bmshamsul/avro-next.git
 cd avro-next
 ./build.sh                                  # builds the app and runs the tests
 ```

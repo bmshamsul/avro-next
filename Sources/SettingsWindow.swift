@@ -85,9 +85,9 @@ final class SettingsWindowController: NSWindowController {
         buttons.spacing = 8
 
         let links = NSStackView(views: [
-            linkButton("Project on GitHub", "https://github.com/Shamsulhaq/avro-next"),
-            linkButton("Report a Problem", "https://github.com/Shamsulhaq/avro-next/issues/new/choose"),
-            linkButton("Contribute", "https://github.com/Shamsulhaq/avro-next/blob/main/CONTRIBUTING.md"),
+            linkButton("Project on GitHub", "https://github.com/bmshamsul/avro-next"),
+            linkButton("Report a Problem", "https://github.com/bmshamsul/avro-next/issues/new/choose"),
+            linkButton("Contribute", "https://github.com/bmshamsul/avro-next/blob/main/CONTRIBUTING.md"),
         ])
         links.spacing = 14
 

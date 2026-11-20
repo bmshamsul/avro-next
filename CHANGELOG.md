@@ -3,6 +3,7 @@
 ## 0.1.6
 
 - Fixed Shift letters (T, D, N, R, O, I, U, Sh, Ng…) and Shift symbols (: $ etc.) typing the unshifted character. Keys are now read by their physical position, so Shift always counts. Caps Lock no longer changes letters; use Shift.
+- Updates follow the repository's new address (github.com/bmshamsul/avro-next). Copies on 0.1.4 and 0.1.5 still get this update through the old address.
 
 ## 0.1.5
 

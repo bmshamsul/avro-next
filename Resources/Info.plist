@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>AvroNextUpdateRepo</key>
-	<string>Shamsulhaq/avro-next</string>
+	<string>bmshamsul/avro-next</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

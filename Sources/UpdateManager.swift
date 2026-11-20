@@ -21,7 +21,7 @@ final class UpdateManager: NSObject {
     private(set) var busy = false
 
     let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0"
-    private let repo = Bundle.main.infoDictionary?["AvroNextUpdateRepo"] as? String ?? "Shamsulhaq/avro-next"
+    private let repo = Bundle.main.infoDictionary?["AvroNextUpdateRepo"] as? String ?? "bmshamsul/avro-next"
     private let defaults = UserDefaults.standard
     private var timer: Timer?
 
@@ -118,13 +118,13 @@ final class UpdateManager: NSObject {
     }
 
     private func install(_ info: UpdateInfo) async {
-        guard UpdateCore.isTrustedDownload(info.dmgURL, repo: repo) else {
+        guard UpdateCore.isTrustedDownload(info.effectiveDownloadURL, repo: repo) else {
             return fail(UpdateError.untrustedURL)
         }
         busy = true
         setStatus("Downloading Avro Next \(info.version)…")
         do {
-            let (temp, response) = try await URLSession.shared.download(from: info.dmgURL)
+            let (temp, response) = try await URLSession.shared.download(from: info.effectiveDownloadURL)
             let code = (response as? HTTPURLResponse)?.statusCode ?? 0
             guard code == 200 else { throw UpdateError.badResponse(code) }
 

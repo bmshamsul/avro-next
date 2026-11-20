@@ -5,14 +5,22 @@ import Foundation
 struct UpdateInfo: Codable, Equatable {
     let version: String
     let prerelease: Bool
+    /// Kept on the repository's old address for copies from before the move
+    /// (0.1.4 and 0.1.5 only accept that path; GitHub redirects it).
     let dmgURL: URL
+    /// The DMG on the current address. Newer copies use this when present.
+    let downloadURL: URL?
     let sha256: String
     let size: Int
     let notesURL: URL
 
+    /// The URL this copy downloads from.
+    var effectiveDownloadURL: URL { downloadURL ?? dmgURL }
+
     enum CodingKeys: String, CodingKey {
         case version, prerelease, sha256, size
         case dmgURL = "dmg_url"
+        case downloadURL = "download_url"
         case notesURL = "notes_url"
     }
 }
@@ -61,7 +69,9 @@ enum UpdateCore {
     static func releaseTags(fromAtom data: Data, repo: String) -> [String] {
         guard let text = String(data: data, encoding: .utf8),
               let regex = try? NSRegularExpression(
-                  pattern: "/" + NSRegularExpression.escapedPattern(for: repo) + "/releases/tag/([A-Za-z0-9._-]+)")
+                  // GitHub owner and repository names are case-insensitive.
+                  pattern: "/" + NSRegularExpression.escapedPattern(for: repo) + "/releases/tag/([A-Za-z0-9._-]+)",
+                  options: .caseInsensitive)
         else { return [] }
         var seen = Set<String>(), tags: [String] = []
         for match in regex.matches(in: text, range: NSRange(text.startIndex..., in: text)) {
@@ -82,8 +92,8 @@ enum UpdateCore {
 
     /// Only HTTPS downloads from this repository's releases are accepted.
     static func isTrustedDownload(_ url: URL, repo: String) -> Bool {
-        url.scheme == "https" && url.host == "github.com"
-            && url.path.hasPrefix("/\(repo)/releases/download/")
+        url.scheme == "https" && url.host?.lowercased() == "github.com"
+            && url.path.lowercased().hasPrefix("/\(repo.lowercased())/releases/download/")
     }
 
     static func verify(fileAt url: URL, sha256: String, size: Int) -> Bool {
@@ -102,7 +112,7 @@ enum UpdateCore {
             if (response as? HTTPURLResponse)?.statusCode == 404 { continue }   // release without a manifest
             try check(response)
             let info = try JSONDecoder().decode(UpdateInfo.self, from: data)
-            guard isTrustedDownload(info.dmgURL, repo: repo) else { throw UpdateError.untrustedURL }
+            guard isTrustedDownload(info.effectiveDownloadURL, repo: repo) else { throw UpdateError.untrustedURL }
             if info.prerelease && !includePrereleases { continue }
             return isNewer(info.version, than: current) ? info : nil
         }

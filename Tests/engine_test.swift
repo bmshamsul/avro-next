@@ -175,7 +175,7 @@ do {
 
 // Update logic (offline).
 do {
-    let repo = "Shamsulhaq/avro-next"
+    let repo = "bmshamsul/avro-next"
     var ok = true
     ok = ok && UpdateCore.isNewer("0.1.4", than: "0.1.3")
     ok = ok && UpdateCore.isNewer("v0.1.10", than: "0.1.9")
@@ -220,9 +220,31 @@ do {
     {"version":"0.1.4","prerelease":true,"dmg_url":"https://github.com/\(repo)/releases/download/v0.1.4/Avro-Next-0.1.4.dmg",
      "sha256":"\(realSha)","size":4,"notes_url":"https://github.com/\(repo)/releases/tag/v0.1.4"}
     """
-    if let info = try? JSONDecoder().decode(UpdateInfo.self, from: Data(manifest.utf8)), info.version == "0.1.4", info.prerelease {
-        print("ok   update.json format")
+    if let info = try? JSONDecoder().decode(UpdateInfo.self, from: Data(manifest.utf8)), info.version == "0.1.4", info.prerelease,
+       info.effectiveDownloadURL == info.dmgURL {
+        print("ok   update.json format (without download_url)")
     } else { print("FAIL update.json format"); failures += 1 }
+
+    // Repository moved (Shamsulhaq -> bmshamsul): one manifest serves old and new copies.
+    let legacy = "Shamsulhaq/avro-next"
+    let bridged = """
+    {"version":"0.1.6","prerelease":true,
+     "dmg_url":"https://github.com/\(legacy)/releases/download/v0.1.6/Avro-Next-0.1.6.dmg",
+     "download_url":"https://github.com/\(repo)/releases/download/v0.1.6/Avro-Next-0.1.6.dmg",
+     "sha256":"\(realSha)","size":4,"notes_url":"https://github.com/\(repo)/releases/tag/v0.1.6"}
+    """
+    let b = try? JSONDecoder().decode(UpdateInfo.self, from: Data(bridged.utf8))
+    let newTrusts = b.map { UpdateCore.isTrustedDownload($0.effectiveDownloadURL, repo: repo) } ?? false
+    let oldTrusts = b.map { UpdateCore.isTrustedDownload($0.dmgURL, repo: legacy) } ?? false
+    let newRejectsLegacy = b.map { !UpdateCore.isTrustedDownload($0.dmgURL, repo: repo) } ?? false
+    if newTrusts && oldTrusts && newRejectsLegacy { print("ok   moved repository: new and old copies each trust their own URL") }
+    else { print("FAIL moved repository manifest"); failures += 1 }
+
+    let mixedCase = UpdateCore.releaseTags(
+        fromAtom: Data("<a href=\"https://github.com/BMShamsul/Avro-Next/releases/tag/v0.2.0\"/>".utf8), repo: repo)
+    let caseTrust = UpdateCore.isTrustedDownload(URL(string: "https://GitHub.com/BmShamsul/avro-next/releases/download/v1/a.dmg")!, repo: repo)
+    if mixedCase == ["v0.2.0"] && caseTrust { print("ok   repository names match case-insensitively") }
+    else { print("FAIL case-insensitive repository match: \(mixedCase) \(caseTrust)"); failures += 1 }
 }
 
 // Live settings: switch layout without recreating the engine.

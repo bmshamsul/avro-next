@@ -330,7 +330,7 @@ emit(40)
 
 // End card
 caption = ""
-card = ("Free and open source", "github.com/Shamsulhaq/avro-next")
+card = ("Free and open source", "github.com/bmshamsul/avro-next")
 emit(90)
 still("end")
 

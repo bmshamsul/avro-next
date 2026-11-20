@@ -23,6 +23,11 @@ on:
 permissions:
   contents: write
 
+env:
+  # The repository's address before the owner was renamed (Shamsulhaq -> bmshamsul).
+  # Keeps 0.1.4/0.1.5 copies receiving updates. Remove once nobody runs those.
+  LEGACY_REPO: Shamsulhaq/avro-next
+
 jobs:
   build:
     runs-on: macos-15   # Apple Silicon
@@ -89,11 +94,16 @@ jobs:
           DMG="dist/Avro-Next-$VERSION.dmg"
           PRERELEASE=$([ "$SIGNED" = "true" ] && echo false || echo true)
           BASE="https://github.com/$GITHUB_REPOSITORY/releases"
+          # Copies from before the repository moved (0.1.4, 0.1.5) only trust
+          # downloads on the old address. GitHub redirects it, so dmg_url keeps the
+          # old path for them; newer copies read download_url instead.
+          OLD_BASE="https://github.com/${LEGACY_REPO:-$GITHUB_REPOSITORY}/releases"
           cat > dist/update.json <<EOF
           {
             "version": "$VERSION",
             "prerelease": $PRERELEASE,
-            "dmg_url": "$BASE/download/$GITHUB_REF_NAME/Avro-Next-$VERSION.dmg",
+            "dmg_url": "$OLD_BASE/download/$GITHUB_REF_NAME/Avro-Next-$VERSION.dmg",
+            "download_url": "$BASE/download/$GITHUB_REF_NAME/Avro-Next-$VERSION.dmg",
             "sha256": "$(shasum -a 256 "$DMG" | cut -d' ' -f1)",
             "size": $(stat -f%z "$DMG"),
             "notes_url": "$BASE/tag/$GITHUB_REF_NAME"
@@ -109,7 +119,13 @@ jobs:
         run: |
           FLAGS="--generate-notes"
           if [ "$SIGNED" != "true" ]; then FLAGS="$FLAGS --prerelease"; fi
-          gh release create "$GITHUB_REF_NAME" dist/*.dmg dist/update.json --title "Avro Next ${GITHUB_REF_NAME#v}" $FLAGS
+          NOTES="If you have Avro Next 0.1.4 or later, it offers this update automatically, or use **Check for Updates…** in the input menu."
+          if [ -n "$LEGACY_REPO" ]; then
+            # Old copies find releases by this exact link in the release feed.
+            NOTES="$NOTES"$'\n\n'"<sub>Update link for older versions: https://github.com/$LEGACY_REPO/releases/tag/$GITHUB_REF_NAME</sub>"
+          fi
+          gh release create "$GITHUB_REF_NAME" dist/*.dmg dist/update.json \
+            --title "Avro Next ${GITHUB_REF_NAME#v}" --notes "$NOTES" $FLAGS
 
       - name: Keep the DMG as a build artifact
         uses: actions/upload-artifact@v4.6.2
