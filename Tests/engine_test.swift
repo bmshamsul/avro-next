@@ -131,6 +131,48 @@ do {
     else { print("FAIL candidate state"); failures += 1 }
 }
 
+// Regression: Shift letters. Keys are read by physical key code, as AvroController
+// does, so Shift must change the letter (t → ত, T → ট).
+do {
+    let e = AvroEngine(databaseDir: args[1], userDir: tmp)!
+    func typeKeys(_ keys: [(UInt16, Bool)]) -> String {
+        var last: RitiSuggestion?
+        for (code, shift) in keys {
+            let ch = KeyMap.character(forKeyCode: code, shift: shift)!
+            last = e.press(KeyMap.code(for: ch)!, shift: shift, selection: 0)
+        }
+        let top = last?.items.first ?? ""
+        e.finish()
+        return top
+    }
+    let t = 17, o = 31, k = 40, n = 45, d = 2, r = 15, b = 11, a = 0, i = 34, semicolon = 41, four = 21
+    let cases: [(String, [(UInt16, Bool)], String)] = [
+        ("t", [(UInt16(t), false)], "ত"),
+        ("T", [(UInt16(t), true)], "ট"),
+        ("D", [(UInt16(d), true)], "ড"),
+        ("kOn", [(UInt16(k), false), (UInt16(o), true), (UInt16(n), false)], "কোণ"),
+        ("baRi", [(UInt16(b), false), (UInt16(a), false), (UInt16(r), true), (UInt16(i), false)], "বাড়ি"),
+        ("Shift+;", [(UInt16(semicolon), true)], "\u{0983}"),
+        ("Shift+4", [(UInt16(four), true)], "৳"),
+    ]
+    var bad: [String] = []
+    for (name, keys, expect) in cases where typeKeys(keys) != expect { bad.append(name) }
+    if bad.isEmpty { print("ok   shift keys by key code (T, D, kOn, baRi, :, $)") }
+    else { print("FAIL shift keys: \(bad)"); failures += 1 }
+
+    // Every key in the position table, shifted or not, must reach the engine.
+    var unmapped: [String] = []
+    for code in UInt16(0)...UInt16(127) {
+        for shift in [false, true] {
+            if let ch = KeyMap.character(forKeyCode: code, shift: shift), KeyMap.code(for: ch) == nil {
+                unmapped.append("\(code)\(shift ? "+shift" : "")=\(ch)")
+            }
+        }
+    }
+    if unmapped.isEmpty { print("ok   every physical key maps to a riti key") }
+    else { print("FAIL unmapped keys: \(unmapped)"); failures += 1 }
+}
+
 // Update logic (offline).
 do {
     let repo = "Shamsulhaq/avro-next"

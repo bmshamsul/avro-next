@@ -159,13 +159,18 @@ final class AvroController: IMKInputController {
             break
         }
 
-        guard let ch = event.charactersIgnoringModifiers?.first,
+        // Read the key by position so Shift always counts (see KeyMap.character).
+        // Caps Lock is deliberately ignored: in Avro Phonetic, case changes the
+        // letter (t → ত, T → ট), so only Shift should do that.
+        let shift = flags.contains(.shift)
+        guard let ch = KeyMap.character(forKeyCode: event.keyCode, shift: shift)
+                ?? event.characters?.first,
               let code = KeyMap.code(for: ch) else {
             if composing { commit(engine: engine, client: client) }
             return false
         }
 
-        let suggestion = engine.press(code, shift: flags.contains(.shift), selection: state.selected)
+        let suggestion = engine.press(code, shift: shift, selection: state.selected)
         // Layouts such as Probhat ignore some keys; let those through untouched.
         if !engine.hasSession && (suggestion?.isEmpty ?? true) { return false }
         update(suggestion, engine: engine, client: client)

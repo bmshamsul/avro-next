@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.6
+
+- Fixed Shift letters (T, D, N, R, O, I, U, Sh, Ng…) and Shift symbols (: $ etc.) typing the unshifted character. Keys are now read by their physical position, so Shift always counts. Caps Lock no longer changes letters; use Shift.
+
 ## 0.1.5
 
 - Settings: links to the project, problem reports and contributing; developer credit in the About line.
