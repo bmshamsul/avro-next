@@ -11,3 +11,4 @@
 - 2026-11-10 v0.1.4 published (pre-release) with update.json; live check: 0.1.3 -> offered 0.1.4, DMG SHA verified; installed locally (dev-signed). Alert/notification UI not yet seen live.
 - 2026-11-11 Added CONTRIBUTING.md, Developer + Contributing README sections (public GitHub profile info only, no email), issue/PR templates, CI workflow (build+test on push/PR), Settings footer links + credit. Unreleased (next tag).
 - 2026-11-11 Published v0.1.5 pre-release (contributor docs, settings links). Update probe: 0.1.4 is offered 0.1.5, checksum verified.
+- 2026-11-20 v0.1.6 published (Shift fix + repo move bridge). Verified: shipped 0.1.5 UpdateCore finds 0.1.6 via old address; new code via new address; both downloads checksum-verified. Live typing of Shift keys still to be confirmed by user.
