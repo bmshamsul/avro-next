@@ -15,7 +15,11 @@ import Cocoa
 
 // MARK: - Inputs
 
-struct ScriptLine: Decodable { let id: String; let scene: String; let spoken: String; let caption: String }
+struct ScriptLine: Decodable {
+    let id: String; let scene: String; let spoken: String; let caption: String
+    /// For a non-English script: the scene's English cue word -> the word spoken at that moment.
+    let cues: [String: String]?
+}
 struct Script: Decodable { let lines: [ScriptLine] }
 struct LineTime: Decodable { let id: String; let start: Double; let end: Double }
 struct Timing: Decodable { let total: Double; let lines: [LineTime] }
@@ -36,12 +40,23 @@ let SCALE = CGFloat(OUT_W) / W
 func frameAt(_ seconds: Double) -> Int { Int((seconds * Double(FPS)).rounded()) }
 let totalFrames = frameAt(timing.total)
 
-/// The moment a word is spoken, estimated from its position in the line.
+/// Letters and digits only (Bengali vowel signs included), so spaces and punctuation don't skew timing.
+func letterCount(_ s: Substring) -> Int {
+    s.unicodeScalars.filter { $0.properties.isAlphabetic || $0.properties.numericType != nil
+        || (0x0980...0x09FF).contains($0.value) }.count
+}
+
+/// The moment a word is spoken, estimated from the share of letters before it in the line.
 func wordTime(_ lineIndex: Int, _ word: String) -> Double {
     let line = script.lines[lineIndex], t = timing.lines[lineIndex]
-    let spoken = line.spoken.lowercased()
-    guard let r = spoken.range(of: word.lowercased()) else { return t.start }
-    let frac = Double(spoken.distance(from: spoken.startIndex, to: r.lowerBound)) / Double(max(spoken.count, 1))
+    let target = line.cues?[word] ?? word
+    // Literal code-unit search: a Bengali stem like "সিলিকন" ends inside the grapheme "নে" of
+    // "সিলিকনের", which Swift's character-based String.range(of:) never matches.
+    let spoken = line.spoken as NSString
+    let r = spoken.range(of: target, options: [.literal, .caseInsensitive])
+    guard r.location != NSNotFound else { fatalError("cue “\(target)” is not in line “\(line.id)”") }
+    let before = Substring(spoken.substring(to: r.location))
+    let frac = Double(letterCount(before)) / Double(max(letterCount(Substring(line.spoken)), 1))
     return t.start + frac * (t.end - t.start)
 }
 
